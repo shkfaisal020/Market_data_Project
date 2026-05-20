@@ -1,0 +1,28 @@
+services:
+
+  postgres:
+    image: postgres:15
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: marketdb
+
+    ports:
+      - "5432:5432"
+
+  api:
+    build: ./api
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - postgres
+
+  etl:
+    build: ./etl
+
+    depends_on:
+      - postgres
+      - api
