@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 import requests
 import pandas as pd
 import time
 import logging
+load_dotenv()
 
 from pydantic import BaseModel, ValidationError
 from sqlalchemy import create_engine, text
@@ -20,7 +23,16 @@ logging.basicConfig(
 # Database Connection
 # =========================
 
-DB_URL = "postgresql://admin:admin@localhost:5432/marketdb"
+DB_URL = f"""
+
+postgresql://
+{os.getenv('POSTGRES_USER')}:
+{os.getenv('POSTGRES_PASSWORD')}@
+{os.getenv('POSTGRES_HOST')}:
+{os.getenv('POSTGRES_PORT')}/
+{os.getenv('POSTGRES_DB')}
+
+""".replace("\n", "")
 
 engine = create_engine(DB_URL)
 
